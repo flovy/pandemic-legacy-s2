@@ -1,14 +1,17 @@
-import { InfectionCard } from "./infection-card";
+import { InfectionCity } from "./infection-city";
 
 export class InfectionSubDeck {
 
-  constructor(public cards :InfectionCard[], public epidemicNumber: number) {
+  constructor(public cities: InfectionCity[], public epidemicNumber: number) {
   }
 
-  public draw(card: InfectionCard): InfectionCard {
-    for(var i = 0; i < this.cards.length; i++) {
-      if(this.cards[i]=== card) {
-        return this.cards.splice(i, 1)[0];
+  public remove(cityName: string): void {
+    for(var i = 0; i < this.cities.length; i++) {
+      if(this.cities[i].name === cityName) {
+        this.cities[i].nbCards--;
+        if(this.cities[i].nbCards <= 0) {
+          this.cities.splice(i, 1);
+        }
       }
     }
   }

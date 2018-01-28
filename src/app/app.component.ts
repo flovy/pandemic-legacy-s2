@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { InfectionTrackerPage } from '../pages/infection-tracker/infection-tracker';
+import { InfectionDeckBuilderPage } from '../pages/infection-deck-builder/infection-deck-builder';
 
 @Component({
   templateUrl: 'app.html'
@@ -11,7 +12,7 @@ import { InfectionTrackerPage } from '../pages/infection-tracker/infection-track
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = InfectionTrackerPage;
+  rootPage: any = InfectionDeckBuilderPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -20,6 +21,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
+      { title: 'Infection Deck Builder', component: InfectionDeckBuilderPage },
       { title: 'Infection Tracker', component: InfectionTrackerPage }
     ];
 

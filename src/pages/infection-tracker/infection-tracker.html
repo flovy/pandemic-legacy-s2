@@ -8,36 +8,47 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item-divider color="danger">
-      <span>Make sur you "Infect" before clicking</span>
-      <button ion-button item-end color="danger" (click)="handleEpidemic()">Epidemic</button>
-  </ion-item-divider>
-  <h3>Infection Deck</h3>
-  <div>
-    <ion-list>
-      <div *ngFor="let subDeck of infectionDeck.subDecks">
-        <ion-list-header>
-          {{subDeck.epidemicNumber === 0 ? 'Beginning' : 'Epidemic #' + subDeck.epidemicNumber}}
-        </ion-list-header>
-        <ion-item *ngFor="let card of subDeck.cards">
-          <h2>{{ card.city }}</h2>
-          <button ion-button clear item-end (click)="draw(subDeck, card)">Draw</button>
-        </ion-item>
-      </div>
-      <ion-item *ngIf="infectionDeck.numberOfEpidemic == 0">
-          <ion-input placeholder="Add a city" [(ngModel)]="cityToAdd"></ion-input>
-          <ion-input type="number" placeholder="Nb" [(ngModel)]="nbToAdd"></ion-input>
-          <button ion-button item-end (click)="addCity()">Add</button>
-      </ion-item>
-    </ion-list>
+  <div *ngIf="!infectionDeck">
+    <h3>Choose your deck</h3>
+    <ion-item>
+      <ion-label>Decks</ion-label>
+      <ion-select [(ngModel)]="selectedDeck">
+        <ion-option *ngFor="let deck of getDeckList()" [value]="deck">{{deck.name}}</ion-option>
+      </ion-select>
+      <button ion-button item-end (click)="start()">Start tracking</button>
+    </ion-item>
   </div>
 
-  <h3>Infection Discard Pile</h3>
-  <div>
+  <div *ngIf="infectionDeck">
+    <h3>Tracking deck <strong>{{infectionDeck.name}}</strong></h3>
+    <ion-item-divider color="danger">
+        <span>Make sure you "Infect" before clicking</span>
+        <button ion-button item-end color="danger" (click)="handleEpidemic()">Epidemic</button>
+    </ion-item-divider>
+    <h3>Infection Deck</h3>
+    <div>
       <ion-list>
-        <ion-item *ngFor="let card of infectionDiscardPile.cards">
-          <h2>{{ card.city }}</h2>
+        <div *ngFor="let subDeck of infectionDeck.subDecks">
+          <ion-list-header>
+            {{subDeck.epidemicNumber === 0 ? 'Beginning' : 'Epidemic #' + subDeck.epidemicNumber}}
+          </ion-list-header>
+          <ion-item *ngFor="let city of subDeck.cities">
+            <span>{{ city.name }}</span>
+            <ion-badge [color]="city.getDangerColor()">{{ city.nbCards }}</ion-badge>
+            <button ion-button clear item-end (click)="draw(subDeck, city)">Draw</button>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
+
+    <h3>Infection Discard Pile</h3>
+    <div>
+      <ion-list>
+        <ion-item *ngFor="let city of infectionDiscardPile.cities">
+          <span>{{ city.name }}</span>
+          <ion-badge [color]="city.getDangerColor()">{{ city.nbCards }}</ion-badge>
         </ion-item>
       </ion-list>
     </div>
+  </div>
 </ion-content>

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
 import { InfectionDeck } from '../../app/model/infection-deck';
 import { InfectionDiscardPile } from '../../app/model/infection-dicard-pile';
-import { InfectionCard } from '../../app/model/infection-card';
+import { InfectionCity } from '../../app/model/infection-city';
 import { InfectionSubDeck } from '../../app/model/infection-sub-deck';
+import { InfectionDeckService } from '../../app/service/infection-deck-service';
 
 @Component({
   selector: 'page-infection-tracker',
@@ -11,24 +11,26 @@ import { InfectionSubDeck } from '../../app/model/infection-sub-deck';
 })
 export class InfectionTrackerPage {
 
-  public infectionDeck: InfectionDeck = new InfectionDeck();
-  public infectionDiscardPile: InfectionDiscardPile = new InfectionDiscardPile();
+  public selectedDeck: InfectionDeck;
 
-  public cityToAdd: string;
-  public nbToAdd: number;
+  public infectionDeck: InfectionDeck;
+  public infectionDiscardPile: InfectionDiscardPile;
 
-  constructor(public navCtrl: NavController) {
-
+  constructor(private infectionDeckService: InfectionDeckService) {
   }
 
-  public draw(subDeck: InfectionSubDeck, card: InfectionCard): void {
-    this.infectionDiscardPile.add(subDeck.draw(card));
+  public getDeckList(): InfectionDeck[] {
+    return this.infectionDeckService.decks;
   }
 
-  public addCity(): void {
-    this.infectionDeck.addInfectionCard(this.cityToAdd, Number(this.nbToAdd));
-    this.cityToAdd = null;
-    this.nbToAdd = null;
+  public start(): void {
+    this.infectionDeck = this.selectedDeck;
+    this.infectionDiscardPile = new InfectionDiscardPile();
+  }
+
+  public draw(subDeck: InfectionSubDeck, city: InfectionCity): void {
+    subDeck.remove(city.name);
+    this.infectionDiscardPile.add(city.name);
   }
 
   public handleEpidemic(): void {

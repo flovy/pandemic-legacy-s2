@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-title>Infection Deck Builder</ion-title>
+    </ion-navbar>
+  </ion-header>
+
+  <ion-content padding>
+    <div *ngIf="!infectionDeck">
+      <button ion-button block (click)="newDeck()">Build a new deck</button>
+    </div>
+    <div *ngIf="infectionDeck">
+      <ion-list>
+        <ion-item-divider color="primary">
+            Add a city
+          </ion-item-divider>
+          <ion-item>
+              <ion-input placeholder="City name" [(ngModel)]="cityToAdd"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-input placeholder="Number of cards" type="number" [(ngModel)]="nbToAdd"></ion-input>
+              <button ion-button item-end (click)="addCity()">Add city</button>
+          </ion-item>
+        <ion-item-divider color="danger">
+          Your deck
+        </ion-item-divider>
+        <ion-item *ngFor="let city of infectionDeck.subDecks[0].cities">
+          <span>{{ city.name }}</span>
+          <ion-badge color="danger">{{ city.nbCards }}</ion-badge>
+          <button ion-button item-end color="danger" (click)="removeCity(city)">Remove</button>
+        </ion-item>
+        <ion-item-divider color="secondary">
+          Save your deck
+        </ion-item-divider>
+        <ion-item>
+            <ion-input placeholder="Deck name" [(ngModel)]="deckName"></ion-input>
+            <button ion-button item-end (click)="saveDeck()" color="secondary">Save your deck</button>
+        </ion-item>
+      </ion-list>
+    </div>
+
+  </ion-content>
