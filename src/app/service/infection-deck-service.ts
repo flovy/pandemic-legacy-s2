@@ -7,7 +7,7 @@ import { InfectionSubDeck } from '../model/infection-sub-deck';
 @Injectable()
 export class InfectionDeckService {
 
-  public decks: InfectionDeck[];
+  public decks: InfectionDeck[] = [];
 
   private decksKeyStorage: string = "PLS2_DECKS";
 
