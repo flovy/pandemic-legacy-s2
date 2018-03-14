@@ -10,12 +10,14 @@ import { InfectionTrackerPage } from '../pages/infection-tracker/infection-track
 import { InfectionDeckBuilderPage } from '../pages/infection-deck-builder/infection-deck-builder';
 import { InfectionDeckService } from './service/infection-deck-service';
 import { IonicStorageModule } from '@ionic/storage';
+import { DeckNameValidatorDirective } from './directive/deckname-validator.directive';
 
 @NgModule({
   declarations: [
     MyApp,
     InfectionDeckBuilderPage,
-    InfectionTrackerPage
+    InfectionTrackerPage,
+    DeckNameValidatorDirective
   ],
   imports: [
     BrowserModule,

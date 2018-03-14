@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { InfectionDeck } from '../../app/model/infection-deck';
 import { InfectionCity } from '../../app/model/infection-city';
 import { InfectionDeckService } from '../../app/service/infection-deck-service';
 import { NavController } from 'ionic-angular';
 import { InfectionTrackerPage } from '../infection-tracker/infection-tracker';
 import { InfectionSubDeck } from '../../app/model/infection-sub-deck';
+import { FormGroup, FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'page-infection-deck-builder',
   templateUrl: 'infection-deck-builder.html'
 })
-export class InfectionDeckBuilderPage {
+export class InfectionDeckBuilderPage implements OnInit {
 
   public infectionDeck: InfectionDeck;
 
@@ -18,7 +19,14 @@ export class InfectionDeckBuilderPage {
   public nbToAdd: number;
   public deckName: string;
 
+  public selectedDeck: InfectionDeck;
+
+  public isNew: boolean;
+
   constructor(private infectionDeckService: InfectionDeckService, private navController: NavController) {
+  }
+
+  ngOnInit(): void {
   }
 
   public newDeck(): void {
@@ -34,6 +42,7 @@ export class InfectionDeckBuilderPage {
       new InfectionCity("Lagos", 3),
     ], 0);
     this.infectionDeck = new InfectionDeck([subDeck]);
+    this.isNew = true;
   }
 
   public removeCity(city: InfectionCity): void {
@@ -47,11 +56,23 @@ export class InfectionDeckBuilderPage {
   }
 
   public saveDeck(): void {
-    if(this.deckName != null && this.deckName.length > 0) {
+    if(this.isNew) {
       this.infectionDeckService.save(this.deckName, this.infectionDeck);
-      this.infectionDeck = null;
-      this.deckName = null;
-      this.navController.push(InfectionTrackerPage);
+    } else {
+      this.infectionDeckService.update(this.infectionDeck);
     }
+    this.infectionDeck = null;
+    this.deckName = null;
+    this.navController.push(InfectionTrackerPage);
   }
+
+  public updateDeck(): void {
+    this.isNew = false;
+    this.infectionDeck = this.selectedDeck;
+  }
+
+  public getDeckList(): InfectionDeck[] {
+    return this.infectionDeckService.decks;
+  }
+
 }

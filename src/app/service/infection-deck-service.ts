@@ -25,6 +25,12 @@ export class InfectionDeckService {
     this.storage.set(this.decksKeyStorage, this.decks);
   }
 
+  public update(deck: InfectionDeck): void {
+    let deckToUpdate = this.decks.find(d => d.name === deck.name);
+    deckToUpdate.subDecks = deck.subDecks;
+    this.storage.set(this.decksKeyStorage, this.decks);
+  }
+
   private loadDecks(decks: InfectionDeck[]): void {
     this.decks = [];
     decks.forEach((deck) => {

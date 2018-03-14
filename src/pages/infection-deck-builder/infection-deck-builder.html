@@ -9,7 +9,26 @@
 
   <ion-content padding>
     <div *ngIf="!infectionDeck">
-      <button ion-button block (click)="newDeck()">Build a new deck</button>
+      <form name="creationForm">
+        <h3>Build a new deck</h3>
+        <ion-input placeholder="Deck name" id="deckName" name="deckName"
+          [(ngModel)]="deckName" deckNameValidator #formDeckName="ngModel"></ion-input>
+        <div *ngIf="formDeckName.invalid && (formDeckName.dirty || formDeckName.touched)" class="alert alert-danger">
+          <span *ngIf="formDeckName.errors.deckNameAlreadyExist" [style.color]="'red'">
+            Deck name already exists
+          </span>
+        </div>
+        <button ion-button block (click)="newDeck()" [disabled]="deckName == null || formDeckName.invalid">Create</button>
+      </form>
+      <h3>Or choose a deck to update</h3>
+      <ion-item>
+        <ion-label>Decks</ion-label>
+        <ion-select [(ngModel)]="selectedDeck">
+          <ion-option *ngFor="let deck of getDeckList()" [value]="deck">{{deck.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <button ion-button block color="secondary" (click)="updateDeck()"
+        [disabled]="selectedDeck == null">Update</button>
     </div>
     <div *ngIf="infectionDeck">
       <ion-list>
@@ -31,12 +50,8 @@
           <ion-badge color="danger">{{ city.nbCards }}</ion-badge>
           <button ion-button item-end color="danger" (click)="removeCity(city)">Remove</button>
         </ion-item>
-        <ion-item-divider color="secondary">
-          Save your deck
-        </ion-item-divider>
         <ion-item>
-            <ion-input placeholder="Deck name" [(ngModel)]="deckName"></ion-input>
-            <button ion-button item-end (click)="saveDeck()" color="secondary">Save your deck</button>
+            <button ion-button block (click)="saveDeck()" color="secondary">Save your deck</button>
         </ion-item>
       </ion-list>
     </div>
