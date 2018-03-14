@@ -15,4 +15,14 @@ export class InfectionSubDeck {
       }
     }
   }
+
+  public add(cityName: string): void {
+    let city = this.cities.find(c => c.name === cityName);
+    if(city) {
+      city.nbCards++;
+    } else {
+      this.cities.unshift(new InfectionCity(cityName, 1));
+    }
+  }
+
 }
